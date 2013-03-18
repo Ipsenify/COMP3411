@@ -102,3 +102,34 @@ ancestor(Person, Ancestor) :-
 ancestor(Person, Ancestor) :-
    parent(Parent, Person),
    ancestor(Parent, Ancestor).
+   
+children(Parent, ChildList) :-
+   findall(D, parent(Parent,D), ChildList).
+   
+%sibling_list(Child, Siblings) :-
+%   parent(Parent, Child),
+%   parent(Parent, OtherChild),
+%   Child \= OtherChild,
+%   add(OtherChild, Siblings, [OtherChild|Siblings]).
+
+%add(X,[],[X]).
+%add(X,A,[X|A]).
+
+
+listCount([], 0).
+listCount([_|Tail], Count) :-
+   listCount(Tail, Count1),
+   Count is Count1+1.
+
+countDescendants(Person, Count) :-
+   findall(D, descendant(Person, Descendant), DescendantList),
+   listCount(DescendantList, Count).
+
+deepListCount([], 0).
+deepListCount([Head|Tail], Count) :-
+   deepListCount(Head, Count2),
+   deepListCount(Tail, Count1),
+   Count is Count1 + Count2.
+deepListCount(X, 1).
+
+   
